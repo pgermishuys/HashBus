@@ -6,10 +6,11 @@ namespace HashBus.View.MentionLeaderboard
     {
         static void Main()
         {
-            var dataFolder = ConfigurationManager.AppSettings["DataFolder"];
+            var ravenDBUrl = ConfigurationManager.AppSettings["RavenDBUrl"];
+            var ravenDBDatabase = ConfigurationManager.AppSettings["RavenDBDatabase"];
             var hashTag = ConfigurationManager.AppSettings["hashTag"];
             var refreshInterval = int.Parse(ConfigurationManager.AppSettings["refreshInterval"]);
-            App.RunAsync(dataFolder, hashTag, refreshInterval).GetAwaiter().GetResult();
+            App.RunAsync(ravenDBUrl, ravenDBDatabase, hashTag, refreshInterval).GetAwaiter().GetResult();
         }
     }
 }

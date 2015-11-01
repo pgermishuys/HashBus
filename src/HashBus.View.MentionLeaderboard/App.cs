@@ -1,17 +1,26 @@
-﻿using System.IO;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using HashBus.ReadModel;
+using HashBus.ReadModel.RavenDB;
+using Raven.Client.Document;
 
 namespace HashBus.View.MentionLeaderboard
 {
+
     class App
     {
-        public static async Task RunAsync(string dataFolder, string hashtag, int refreshInterval)
+        public static async Task RunAsync(string ravenDBUrl, string ravenDBDatabase, string hashtag, int refreshInterval)
         {
-            await View.StartAsync(
-                hashtag,
-                refreshInterval,
-                new FileListRepository<Mention>(Path.Combine(dataFolder, "MentionLeaderboardProjection.Mentions")));
+            using (var store = new DocumentStore())
+            {
+                store.Url = ravenDBUrl;
+                store.DefaultDatabase = ravenDBDatabase;
+                store.EnlistInDistributedTransactions = false;
+                store.Initialize();
+                await View.StartAsync(
+                    hashtag,
+                    refreshInterval,
+                    new RavenDBListRepository<Mention>(store));
+            }
         }
     }
 }
