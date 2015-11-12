@@ -45,7 +45,7 @@ namespace HashBus.Twitter.Monitor
                         $"{DateTime.UtcNow.ToLocalTime()} ".DarkGray(),
                         $" {track} ".DarkCyan().OnWhite(),
                         " stream stopped.".Red(),
-                        args.Exception == null ? string.Empty : $" {args.Exception.Message}".DarkRed());
+                        args.Exception == null ? string.Empty : $" {args.Exception.Message}, {args.Exception.Source}, , {args.Exception.StackTrace}".DarkRed());
 
                     stream.MatchingTweetReceived += (sender, e) =>
                     {
